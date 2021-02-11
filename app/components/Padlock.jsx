@@ -40,8 +40,8 @@ export default class Padlock extends React.Component {
     this.setState({success: true});
     if (escapp){
       checkEscapp(answer)
-        .then(async({msg, ok})=>{
-          this.props.onSubmit(true, ok, msg);
+        .then(async({msg, ok, extraMessage})=>{
+          this.props.onSubmit(true, ok, msg, extraMessage);
         });
     } else {
       let msg = good;

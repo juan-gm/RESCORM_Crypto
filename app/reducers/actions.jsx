@@ -58,12 +58,13 @@ export function showDialog(text){
   };
 }
 
-export function finishApp(finished = true, success = false, msg = ""){
+export function finishApp(finished = true, success = false, msg = "", extraMessage){
   return {
     type: 'FINISH_APP',
     finished,
     success,
     msg,
+    extraMessage
   };
 }
 

@@ -1,7 +1,14 @@
 import {GLOBAL_CONFIG} from '../config/config';
 const {escapeRoomId, puzzleId, good, bad} = GLOBAL_CONFIG;
+import * as I18n from './I18n.js';
 
-const ESCAPP_HOST = "http://localhost:3000" || "https://escapp.dit.upm.es";
+const ESCAPP_HOST = /* "http://localhost:3000" ||  */"https://escapp.dit.upm.es";
+const PARTICIPANT = "PARTICIPANT";
+const NOT_ACTIVE = "NOT_ACTIVE";
+const NOT_STARTED = "NOT_STARTED";
+const TOO_LATE = "TOO_LATE";
+const NOT_A_PARTICIPANT = "NOT_A_PARTICIPANT";
+const AUTHOR = "AUTHOR";
 
 let next_objective_id = 1;
 
@@ -26,18 +33,32 @@ export const checkEscapp = async(solution) => {
     const token = window.token || urlParams.get('token');
     const email = window.email || urlParams.get('email');
     const password = window.password || urlParams.get('password');
-    const isNotLegacy = email && password;
-    console.log(token, email, password)
-    const URL = `${ESCAPP_HOST}/${isEmbeddedInEscapp() ? "" : "api/"}escapeRooms/${escapeRoomId}/puzzles/${puzzleId}/${isNotLegacy ? "submit" : "check"}`;
+    const isNotLegacy = email && (password || token);
+    const URL = `${ESCAPP_HOST}/${ isEmbeddedInEscapp() ? "" : "api/" }escapeRooms/${escapeRoomId}/puzzles/${puzzleId}/${isNotLegacy ? "submit" : "check"}`;
     const res = await fetch(URL, {
       "method": "POST",
-      "body": JSON.stringify(isNotLegacy ? {email, password, solution}:{token, solution}),
+      "body": JSON.stringify(isNotLegacy ? {email, password, solution, token}:{token, solution}),
       "headers": {
         "Content-type": "application/json",
       },
     });
-    const {msg} = await res.json();
-    return {ok: res.ok, msg: msg || (res.ok ? good : bad) || ""};
+
+    const {msg, participation} = await res.json();
+    let extraMessage;
+    if (!extraMessage) {
+      switch(participation) {
+        case PARTICIPANT:
+          break;
+        case TOO_LATE:
+        case NOT_A_PARTICIPANT:
+        case NOT_ACTIVE:
+        case NOT_STARTED:
+        case AUTHOR:
+          extraMessage = I18n.getTrans(participation)
+          break;
+      }
+    }
+    return {ok: res.ok, msg: msg || (res.ok ? good : bad) || "" , extraMessage};
   } catch (err){
     console.error(err);
     return {ok: false, msg: "Connection error"};

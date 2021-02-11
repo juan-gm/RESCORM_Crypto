@@ -2,7 +2,7 @@ import React from 'react';
 
 import Symbol from './Symbol.jsx';
 import {GLOBAL_CONFIG} from '../config/config';
-const {answer, escapp, puzzleLength, good, bad, tip} = GLOBAL_CONFIG;
+const {answer, escapp, puzzleLength, good, bad, tip, PUBLIC_URL} = GLOBAL_CONFIG;
 import {checkEscapp, timeout} from '../vendors/Utils';
 
 export default class Lock extends React.Component {
@@ -41,7 +41,7 @@ export default class Lock extends React.Component {
         </div>
         <div className="center">{this.state.answered ? null :
           <button className="button_lock" onClick={this.lockClick}>
-            <img src={`./../assets/images/${this.state.success ? "lock_open" : "lock_closed"}.png`} width="80px" height="100px" />
+            <img src={`${PUBLIC_URL || "./.."}/assets/images/${this.state.success ? "lock_open" : "lock_closed"}.png`} width="80px" height="100px" />
           </button>}</div>
       </div>
     );
@@ -52,11 +52,13 @@ export default class Lock extends React.Component {
     let userAnswer = this.state.current_choice_index.reduce((accum, el)=>accum + currentQuestion.choices[el].id.toLowerCase(), "");
     let msg = bad;
     let ok = false;
+    let extraMessage;
 
     if (escapp){
       const res = await checkEscapp(userAnswer);
       msg = res.msg;
       ok = res.ok;
+      extraMessage = res.extraMessage;
     } else if (answer && (userAnswer === answer.toLowerCase())){
       ok = true;
       msg = good;
@@ -64,7 +66,7 @@ export default class Lock extends React.Component {
 
     if (ok){
       this.setState({success: true});
-      this.props.onSubmit(true, true, msg);
+      this.props.onSubmit(true, true, msg, extraMessage);
     } else {
       this.setState({error: true});
       await timeout(2000);

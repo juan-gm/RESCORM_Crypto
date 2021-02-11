@@ -9,8 +9,8 @@ export let GLOBAL_CONFIG = {
     timeout: 94,
     answer: "8132",
     tip: "Tip to help you",
-    CombinationLockImage: "./../assets/images/CajaFuerte.png",
-    mode: "Padlock", // ["Symbol", "AlphaNumeric", "Pattern", "CombinationLock", "Padlock"]
+    CombinationLockImage: "assets/images/CajaFuerte.png",
+    mode: "AlphaNumeric", // ["Symbol", "AlphaNumeric", "Pattern", "CombinationLock", "Padlock"]
     theme: "lux",
     good: "Enhorabuena, lo has logrado!!",
     bad: "Lo siento, no has acertado",
@@ -24,6 +24,7 @@ export let GLOBAL_CONFIG = {
       score_threshold: window.config && window.config.threshold ? (window.config.threshold / 100) : 0.6,
     },
     n: undefined,
+    PUBLIC_URL: "./..",
   }, ...window.config},
   production: {...{
     debug: false,
@@ -35,7 +36,7 @@ export let GLOBAL_CONFIG = {
     timeout: 3,
     answer: "1234",
     tip: "Select the top 3 points starting from the left",
-    CombinationLockImage: "./../assets/images/CajaFuerte.png",
+    CombinationLockImage: "/assets/images/CajaFuerte.png",
     mode: "Pattern",
     theme: "superhero",
     good: "Enhorabuena, lo has logrado!!",

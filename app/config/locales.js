@@ -21,6 +21,11 @@ export let LOCALES = {
     "i.time": "Time",
     "i.seconds": "seconds",
     "i.title": "DIGITAL LOCK",
+    "NOT_ACTIVE": "Your shift is not active yet",
+    "NOT_STARTED": "You have not started playing",
+    "TOO_LATE": "Your shift has ended or the time is up",
+    "NOT_A_PARTICIPANT": "You are not a participant of this escape room",
+    "AUTHOR": "You are the author of this escape room"
   },
   es: {
     "i.answer": "Responder",
@@ -44,6 +49,10 @@ export let LOCALES = {
     "i.time": "Tiempo",
     "i.seconds": "segundos",
     "i.title": "CANDADO DIGITAL",
-
+    "NOT_ACTIVE": "Tu turno aún no está activo",
+    "NOT_STARTED": "Aún no has empezado a jugar",
+    "TOO_LATE": "Tu turno ha terminado o te has quedado sin tiempo",
+    "NOT_A_PARTICIPANT": "No participas en esta escape room",
+    "AUTHOR": "Eres el autor de esta escape room",
   },
 };

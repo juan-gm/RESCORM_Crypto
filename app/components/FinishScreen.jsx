@@ -8,6 +8,7 @@ export default class FinishScreen extends React.Component {
     return (
       <div className="finish_screen">
         <h1 id="finish_title">{this.props.msg}</h1>
+        <h2 id="finish_subtitle">{this.props.extraMessage}</h2>
       </div>
     );
   }

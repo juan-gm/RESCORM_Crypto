@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from "./Button";
+import {GLOBAL_CONFIG} from '../config/config';
 
 export default class Symbol extends React.Component {
   constructor(props){
@@ -26,7 +27,7 @@ export default class Symbol extends React.Component {
     let currentChoice = this.props.current_choice_index[this.props.i];
     return <div className="symbol">
       <div className="choice" >
-        {this.props.question.choices[currentChoice].value ? <img className="symbol-img" src={this.props.question.choices[currentChoice].value}/> : this.props.question.choices[currentChoice].id}
+        {this.props.question.choices[currentChoice].value ? <img className="symbol-img" src={(GLOBAL_CONFIG.PUBLIC_URL || "./..") + this.props.question.choices[currentChoice].value}/> : this.props.question.choices[currentChoice].id}
       </div>
       <div className="buttons">
         <Button buttonName="keyboard_arrow_down" buttonFunc={this.onUp}/>

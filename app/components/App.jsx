@@ -34,7 +34,7 @@ export class App extends React.Component {
       if (GLOBAL_CONFIG.timeout && !this.state.stopTime){
         if (this.props.timer === 0 && this.props.tracking.finished !== true){
           this.setState({timeout: true});
-          this.onSubmit(true, false, GLOBAL_CONFIG.bad, 0);
+          this.onSubmit(true, false, GLOBAL_CONFIG.bad, undefined, 0);
         } else if (this.props.timer > 0){
           this.setState({timeout: false});
           this.props.dispatch(timer(this.props.timer - 1));
@@ -44,11 +44,11 @@ export class App extends React.Component {
     this.props.dispatch(addObjectives([new Utils.Objective({id: ("DigitalLock"), progress_measure: 1, score: 1})]));
   }
 
-  async onSubmit(finished, ok, msg, score = 1){
+  async onSubmit(finished, ok, msg, extraMessage, score = 1){
     this.setState({stopTime: true});
     await Utils.timeout(2000);
     this.props.dispatch(objectiveAccomplished("DigitalLock", score));
-    this.props.dispatch(finishApp(finished, ok, msg));
+    this.props.dispatch(finishApp(finished, ok, msg, extraMessage));
   }
 
   render(){
@@ -76,7 +76,7 @@ export class App extends React.Component {
       }
 
     } else {
-      appContent = <FinishScreen dispatch={this.props.dispatch} msg={this.props.tracking.msg}/>;
+      appContent = <FinishScreen dispatch={this.props.dispatch} msg={this.props.tracking.msg} extraMessage={this.props.tracking.extraMessage}/>;
     }
 
     return (

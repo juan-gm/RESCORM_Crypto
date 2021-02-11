@@ -71,6 +71,7 @@ function trackingReducer(state = {}, action){
       newState.finished = action.finished;
     }
     newState.msg = action.msg;
+    newState.extraMessage = action.extraMessage;
     return newState;
   default:
     return state;

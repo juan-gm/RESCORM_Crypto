@@ -35,8 +35,8 @@ export default class Combination extends React.Component {
 
   onMatch(){
     if (escapp){
-      checkEscapp(answer).then(async({msg, ok})=>{
-        this.props.onSubmit(true, ok, msg);
+      checkEscapp(answer).then(async({msg, ok, extraMessage})=>{
+        this.props.onSubmit(true, ok, msg, extraMessage);
       });
     } else {
       let msg = good;

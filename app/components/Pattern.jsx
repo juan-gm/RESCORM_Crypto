@@ -27,12 +27,14 @@ export default class Pattern extends React.Component {
   async onFinish(){
     let correct = false;
     let msg = "";
+    let extraMessage;
     const path = this.state.path.map(n => n + 1);
     this.setState({isLoading: true});
     if (escapp){
       const res = await checkEscapp(path.join(""));
       correct = res.ok;
       msg = res.msg;
+      extraMessage = res.extraMessage;
     } else {
       correct = path.join("") === answer;
       msg = correct ? good : bad;
@@ -40,7 +42,7 @@ export default class Pattern extends React.Component {
     await timeout(200);
     if (correct){
       this.setState({isLoading: false, success: true, disabled: true});
-      this.props.onSubmit(true, correct, msg);
+      this.props.onSubmit(true, correct, msg, extraMessage);
     } else {
       this.setState({disabled: true, error: true, wrong: msg || bad || ""});
       await timeout(2000);
