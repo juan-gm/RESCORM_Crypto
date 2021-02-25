@@ -5,7 +5,6 @@ import {GLOBAL_CONFIG} from '../config/config.js';
 require('./../assets/bootswatch/' + GLOBAL_CONFIG.theme + '.bootstrap.min.css');
 require("./../assets/scss/index.scss");
 import * as I18n from '../vendors/I18n.js';
-import * as SAMPLES from '../config/samples.js';
 import * as SAMPLES2 from '../config/samples2.js';
 import * as Utils from '../vendors/Utils.js';
 import {addObjectives, finishApp, timer, objectiveAccomplished} from './../reducers/actions';
@@ -14,9 +13,6 @@ import SCORM from './SCORM.jsx';
 import Header from './Header.jsx';
 import FinishScreen from './FinishScreen.jsx';
 import Lock from './Lock.jsx';
-import CombinationLock from './CombinationLock.jsx';
-import Padlock from './Padlock.jsx';
-import Pattern from './Pattern.jsx';
 
 export class App extends React.Component {
   constructor(props){
@@ -58,20 +54,8 @@ export class App extends React.Component {
     if ((this.props.tracking.finished !== true) || (GLOBAL_CONFIG.finish_screen === false)){
       appHeader = <Header user_profile={this.props.user_profile} time={this.props.timer}/>;
       switch (GLOBAL_CONFIG.mode){
-      case "Symbol":
-        appContent = <Lock onSubmit={this.onSubmit} quiz={SAMPLES.lock_example}/>;
-        break;
       case "AlphaNumeric":
         appContent = <Lock onSubmit={this.onSubmit} quiz={SAMPLES2.lock_example}/>;
-        break;
-      case "Pattern":
-        appContent = <Pattern onSubmit={this.onSubmit}/>;
-        break;
-      case "CombinationLock":
-        appContent = <CombinationLock onSubmit={this.onSubmit}/>;
-        break;
-      case "Padlock":
-        appContent = <Padlock onSubmit={this.onSubmit}/>;
         break;
       }
 

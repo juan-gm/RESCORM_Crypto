@@ -186,6 +186,11 @@ export const lock_example = {
           "value": "",
           "answer": true,
         },
+        {
+          "id": " ",
+          "value": "",
+          "answer": true,
+        }
 
       ],
       "difficulty": 2,
