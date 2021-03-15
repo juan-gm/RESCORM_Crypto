@@ -53,12 +53,7 @@ export class App extends React.Component {
 
     if ((this.props.tracking.finished !== true) || (GLOBAL_CONFIG.finish_screen === false)){
       appHeader = <Header user_profile={this.props.user_profile} time={this.props.timer}/>;
-      switch (GLOBAL_CONFIG.mode){
-      case "AlphaNumeric":
-        appContent = <Lock onSubmit={this.onSubmit} quiz={SAMPLES2.lock_example}/>;
-        break;
-      }
-
+      appContent = <Lock onSubmit={this.onSubmit} quiz={SAMPLES2.lock_example}/>;
     } else {
       appContent = <FinishScreen dispatch={this.props.dispatch} msg={this.props.tracking.msg} extraMessage={this.props.tracking.extraMessage}/>;
     }

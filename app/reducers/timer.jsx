@@ -7,7 +7,7 @@ function timer(state = GLOBAL_CONFIG.timeout, action = {}){
   case 'TIMER':
     return action.time;
   default:
-    return state || 0;
+    return state || 0;
   }
 }
 

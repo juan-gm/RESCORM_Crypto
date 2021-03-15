@@ -25,7 +25,9 @@ export let LOCALES = {
     "NOT_STARTED": "You have not started playing",
     "TOO_LATE": "Your shift has ended or the time is up",
     "NOT_A_PARTICIPANT": "You are not a participant of this escape room",
-    "AUTHOR": "You are the author of this escape room"
+    "AUTHOR": "You are the author of this escape room",
+    "i.placeholder": "Answer",
+    "i.alphabet": "abcdefghijklmnopqrstuvwxyz",
   },
   es: {
     "i.answer": "Responder",
@@ -54,5 +56,7 @@ export let LOCALES = {
     "TOO_LATE": "Tu turno ha terminado o te has quedado sin tiempo",
     "NOT_A_PARTICIPANT": "No participas en esta escape room",
     "AUTHOR": "Eres el autor de esta escape room",
+    "i.placeholder": "Respuesta",
+    "i.alphabet": "abcdefghijklmnñopqrstuvwxyz",
   },
 };

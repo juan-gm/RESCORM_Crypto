@@ -3,15 +3,16 @@ export let GLOBAL_CONFIG = {
     debug: true,
     debug_scorm_api: true,
     debug_scorm_api_window: false,
-    available_locales: ["en", "es"],
+    available_locales: ["es", "en"],
     title: "DIGITAL LOCK",
     showUsername: true,
     timeout: 0, // Time available in seconds, set it to 0 to be infinite.
-    answer: "En un lugar",  //Mensaje a cifrar, sin tildes
-    tip: "Cifrado César, desplazamiento de 3 posiciones",
-    CombinationLockImage: "assets/images/CajaFuerte.png",
-    mode: "AlphaNumeric", // ["Symbol", "AlphaNumeric"]
-    theme: "lux",
+    answer: "En un lugar de la Mancha", // Mensaje a cifrar, sin tildes
+    tip: "Cifrado César, desplazamiento de 3 posiciones", // Pista para el alumno
+    mode: "Caesar", // ["Caesar", "Vigenere", "Transposition"]
+    extra_mode_info: "4", // Extra info depending on the cipher. If Caesar, then number of jumps.
+    // If Vigenere, word to use, etc.
+    theme: "litera",
     good: "Enhorabuena, lo has logrado!!",
     bad: "Lo siento, no has acertado",
     escapp: false,
@@ -30,17 +31,18 @@ export let GLOBAL_CONFIG = {
     debug: false,
     debug_scorm_api: false,
     debug_scorm_api_window: false,
-    available_locales: ["en", "es"],
+    available_locales: ["es", "en"],
     title: "DIGITAL LOCK",
     showUsername: true,
-    timeout: 3,
-    answer: "123",
-    tip: "Select the top 3 points starting from the left",
+    timeout: 0,
+    answer: "En un lugar de la Mancha",
+    tip: "Cifrado César, desplazamiento de 3 posiciones",
     CombinationLockImage: "/assets/images/CajaFuerte.png",
-    mode: "Pattern",
-    theme: "superhero",
+    mode: "Caesar",
+    extra_mode_info: "4",
+    theme: "litera",
     good: "Enhorabuena, lo has logrado!!",
-    bad: "Lo siento, has perdido",
+    bad: "Lo siento, no has acertado",
     escapp: false,
     puzzleId: 1,
     escapeRoomId: 1,

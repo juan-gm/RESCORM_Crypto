@@ -190,7 +190,7 @@ export const lock_example = {
           "id": " ",
           "value": "",
           "answer": true,
-        }
+        },
 
       ],
       "difficulty": 2,

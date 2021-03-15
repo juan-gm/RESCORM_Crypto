@@ -64,7 +64,7 @@ export function finishApp(finished = true, success = false, msg = "", extraMessa
     finished,
     success,
     msg,
-    extraMessage
+    extraMessage,
   };
 }
 

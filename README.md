@@ -1,5 +1,5 @@
 # RESCORM Digital Lock
-By: [@adelabat](http://github.com/adelabat)
+By: [@juan-gm](https://github.com/juan-gm)
 
 This application allows you to customize a digital lock for digital escape rooms. It can be used along with the [escapp](https://escapp.dit.upm.es) platform for managing educational escape rooms.
 
@@ -21,7 +21,7 @@ This application allows you to customize a digital lock for digital escape rooms
    The app will be available at the following URL [http://localhost:8080](http://localhost:8080).  
    The SCORM 1.2 environment will be available at [http://localhost:8080/scorm12.html](http://localhost:8080/scorm12.html).  
    The SCORM 2004 environment will be available at [http://localhost:8080/scorm2004.html](http://localhost:8080/scorm2004.html).
-    
+   
 5. The development server can be stopped by pressing 'Ctrl-C'.
 6. Configuration can be specified in:  
     * `app/config/config.js`: Global configuration for the React application.  
@@ -52,7 +52,8 @@ This application allows you to customize a digital lock for digital escape rooms
 	* **`escapeRoomId`**: Escape room identifier
 	* **`puzzleId`**: Puzzle identifier
    	* **`puzzleLength`**: Number of characters in the solution (number of digits/letters/symbols)
-    
+  
+
 If your are not using escapp, you need to provide the following:
 * **`answer`**: The right code. Depending on the puzzle type it can be a combination of letters and/or numbers.
 * **`successMessage`**: Text to display when the user provides the right answer.
@@ -60,4 +61,4 @@ If your are not using escapp, you need to provide the following:
 
 Additionally, you can specify which SCORM version you will be using:
  * **`scormVersion`**: "1.2" or "2004"
-      
+   

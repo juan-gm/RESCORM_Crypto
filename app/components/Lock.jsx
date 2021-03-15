@@ -2,8 +2,9 @@ import React from 'react';
 
 import Symbol from './Symbol.jsx';
 import {GLOBAL_CONFIG} from '../config/config';
-const {answer, escapp, puzzleLength, good, bad, tip, PUBLIC_URL} = GLOBAL_CONFIG;
+const {answer, mode, extra_mode_info, escapp, puzzleLength, good, bad, tip, PUBLIC_URL} = GLOBAL_CONFIG;
 import {checkEscapp, timeout} from '../vendors/Utils';
+import * as I18n from '../vendors/I18n.js';
 
 export default class Lock extends React.Component {
   constructor(props){
@@ -13,7 +14,7 @@ export default class Lock extends React.Component {
     // current_choice_index is set to an array of incrementing integers starting on zero up until the answer length - 1.
     // For example, if answer = "hola", current_choice_index = [0, 1, 2, 3]
     // Create a new state to hold the contents of the form, which is the user answer:
-    let user_answer = "en un lugar";
+    let user_answer = "";
     this.state = {quiz, answered, current_choice_index, user_answer};
     this.lockClick = this.lockClick.bind(this);
   }
@@ -24,8 +25,9 @@ export default class Lock extends React.Component {
     this.setState({current_choice_index});
   }
 
-  caesarCipher(message, number){
-    const ALPHABET = "abcdefghijklmnñopqrstuvwxyz";
+  caesarCipher(message = answer, number = extra_mode_info){
+    const ALPHABET = I18n.getTrans("i.alphabet");
+    number = parseInt(number, 10);
 
     let result = "";
 
@@ -45,14 +47,89 @@ export default class Lock extends React.Component {
     return result;
   }
 
-  handleChangeForm(e) {
+  vigenereCipher(message = answer, word = extra_mode_info){
+    const ABECEDARIO = I18n.getTrans("i.alphabet");
+    word = word.toLowerCase();
+    message = message.toLowerCase();
+
+    let word_array = [];
+    for (let i = 0; i < word.length; i++){
+      let index = ABECEDARIO.indexOf(word[i]);
+      word_array.push(index);
+    }
+
+    let result = "";
+    let word_array_index = 0;
+
+    for (let i = 0; i < message.length; i++){
+      if (message[i] === " "){
+        result = result + " ";
+        continue;
+      }
+      result = result + this.caesarCipher(message[i], word_array[word_array_index]);
+      word_array_index = word_array_index + 1;
+      if (word_array_index >= word_array.length){
+        word_array_index = 0;
+      }
+    }
+    return result;
+  }
+
+  columnarTranspositionCipher(message = answer, word = extra_mode_info){
+    message = message.toLowerCase();
+
+    let message_without_spaces = message.replace(/\s/g, '');
+    let length = word.length;
+
+    let array_of_columns = [];
+
+    for (let i = 0; i < length; i++){
+      let column_array = [];
+      for (let j = 0; j + i < message_without_spaces.length; j += length){
+        column_array.push(message_without_spaces[j + i]);
+      }
+      array_of_columns.push(column_array);
+    }
+    let ciphered_array = [];
+    let ordered_word = word.split('').sort().join('');
+    let copy_of_word = word;
+    let arr = '';
+
+    for (let i = 0; i < copy_of_word.length; i++){
+      ciphered_array.push(array_of_columns[copy_of_word.indexOf(ordered_word[i])]);
+      arr = copy_of_word.split('');
+      arr[copy_of_word.indexOf(ordered_word[i])] = '-';
+      copy_of_word = arr.join('');
+    }
+
+    return ciphered_array.flat().join('');
+  }
+
+  cipherAlgorithm(){
+    let result = "";
+    switch (mode){
+    case 'Caesar':
+      result = this.caesarCipher();
+      break;
+    case 'Vigenere':
+      result = this.vigenereCipher();
+      break;
+    case 'Transposition':
+      result = this.columnarTranspositionCipher();
+      break;
+    }
+    return result;
+  }
+
+  handleChangeForm(e){
     e.preventDefault();
     this.setState({user_answer: e.target.value});
   }
 
-  handleEnter(e) {
+  handleEnter(e){
     e.preventDefault();
-    this.lockClick;
+    this.lockClick();
+    return false;
   }
 
   render(){
@@ -65,7 +142,11 @@ export default class Lock extends React.Component {
     return (
       <div className="quiz symbols">
         <h2 className="center">{tip}</h2>
-        <h2 className="center">Mensaje cifrado: {this.caesarCipher(answer, 3)}</h2>
+        <h2 className="center">Mensaje cifrado:</h2>
+
+        <div className="center">
+          {this.cipherAlgorithm()}
+        </div>
 
         <div style={{"--number-of-symbols": escapp ? puzzleLength : answer.length}} className={className}>
           {respuesta.map((char, i) =>
@@ -77,22 +158,29 @@ export default class Lock extends React.Component {
           }
         </div>
 
-        <form className="center">
-          <input type="text" value={this.state.user_answer} onSubmit={this.handleEnter.bind(this)} onChange={this.handleChangeForm.bind(this)}>
-          </input>
+        <form className="center" onSubmit={this.handleEnter.bind(this)}>
+          <textarea placeholder = {I18n.getTrans("i.placeholder")} value={this.state.user_answer} onChange={this.handleChangeForm.bind(this)}
+            rows="5" cols="40" style={{borderRadius: "5px", borderColor: "blue" }}
+          />
         </form>
+        <br />
 
         <div className="center">{this.state.answered ? null :
           <button className="button_lock" onClick={this.lockClick}>
             <img src={`${PUBLIC_URL || "./.."}/assets/images/${this.state.success ? "lock_open" : "lock_closed"}.png`} width="80px" height="100px" />
-          </button>}</div>
+          </button>}
+        </div>
+          
+        <div>
+          {}
+        </div>
       </div>
     );
   }
 
   async lockClick(){
     let currentQuestion = this.state.quiz.questions[0];
-    //let userAnswer = this.state.current_choice_index.reduce((accum, el)=>accum + currentQuestion.choices[el].id.toLowerCase(), "");
+    // let userAnswer = this.state.current_choice_index.reduce((accum, el)=>accum + currentQuestion.choices[el].id.toLowerCase(), "");
     let userAnswer = this.state.user_answer.toLowerCase().trim();
     let msg = bad;
     let ok = false;
