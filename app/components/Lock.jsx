@@ -1,6 +1,8 @@
 import React from 'react';
 
 import Symbol from './Symbol.jsx';
+import Caesar from './Caesar.jsx';
+import Transposition from './Transposition.jsx';
 import {GLOBAL_CONFIG} from '../config/config';
 const {answer, mode, extra_mode_info, escapp, puzzleLength, good, bad, tip, PUBLIC_URL} = GLOBAL_CONFIG;
 import {checkEscapp, timeout} from '../vendors/Utils';
@@ -28,6 +30,7 @@ export default class Lock extends React.Component {
   caesarCipher(message = answer, number = extra_mode_info){
     const ALPHABET = I18n.getTrans("i.alphabet");
     number = parseInt(number, 10);
+    message = message.toLowerCase();
 
     let result = "";
 
@@ -78,15 +81,18 @@ export default class Lock extends React.Component {
   columnarTranspositionCipher(message = answer, word = extra_mode_info){
     message = message.toLowerCase();
 
-    let message_without_spaces = message.replace(/\s/g, '');
+    let messageWithoutSpaces = message.replace(/\s/g, '');
     let length = word.length;
 
     let array_of_columns = [];
 
     for (let i = 0; i < length; i++){
       let column_array = [];
-      for (let j = 0; j + i < message_without_spaces.length; j += length){
-        column_array.push(message_without_spaces[j + i]);
+      for (let j = 0; j + i < messageWithoutSpaces.length; j += length){
+        column_array.push(messageWithoutSpaces[j + i]);
+      }
+      if (Math.ceil(messageWithoutSpaces.length / length) !== column_array.length){
+        column_array.push('-');
       }
       array_of_columns.push(column_array);
     }
@@ -132,6 +138,19 @@ export default class Lock extends React.Component {
     return false;
   }
 
+  helpingComponent(){
+    switch (mode){
+    case 'Caesar':
+      return <Caesar/>;
+      break;
+    case 'Vigenere':
+      return 'Vigenere';
+      break;
+    case 'Transposition':
+      return <Transposition/>;
+    }
+  }
+
   render(){
     const currentQuestion = this.state.quiz.questions[0];
     const respuesta = (escapp ? Array(puzzleLength).fill("") : answer.toLowerCase().split(""));
@@ -158,10 +177,15 @@ export default class Lock extends React.Component {
           }
         </div>
 
+        <div className="center">
+          {this.helpingComponent()}
+        </div>
+        <br />
+
         <form className="center" onSubmit={this.handleEnter.bind(this)}>
           <textarea placeholder = {I18n.getTrans("i.placeholder")} value={this.state.user_answer} onChange={this.handleChangeForm.bind(this)}
-            rows="5" cols="40" style={{borderRadius: "5px", borderColor: "blue" }}
-          />
+            rows="5" cols="40" style={{borderRadius: "5px", borderColor: "blue"}}
+          /> class=form-control
         </form>
         <br />
 
@@ -169,10 +193,6 @@ export default class Lock extends React.Component {
           <button className="button_lock" onClick={this.lockClick}>
             <img src={`${PUBLIC_URL || "./.."}/assets/images/${this.state.success ? "lock_open" : "lock_closed"}.png`} width="80px" height="100px" />
           </button>}
-        </div>
-          
-        <div>
-          {}
         </div>
       </div>
     );
