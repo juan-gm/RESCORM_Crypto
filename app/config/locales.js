@@ -28,6 +28,7 @@ export let LOCALES = {
     "AUTHOR": "You are the author of this escape room",
     "i.placeholder": "Answer",
     "i.alphabet": "abcdefghijklmnopqrstuvwxyz",
+    "i.cipheredMessage": "Ciphered Message:",
   },
   es: {
     "i.answer": "Responder",
@@ -58,5 +59,6 @@ export let LOCALES = {
     "AUTHOR": "Eres el autor de esta escape room",
     "i.placeholder": "Respuesta",
     "i.alphabet": "abcdefghijklmnñopqrstuvwxyz",
+    "i.cipheredMessage": "Mensaje cifrado:"
   },
 };

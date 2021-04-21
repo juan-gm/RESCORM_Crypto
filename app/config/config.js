@@ -3,13 +3,13 @@ export let GLOBAL_CONFIG = {
     debug: true,
     debug_scorm_api: true,
     debug_scorm_api_window: false,
-    available_locales: ["es", "en"],
+    available_locales: ["en", "es"],
     title: "DIGITAL LOCK",
     showUsername: true,
     timeout: 0, // Time available in seconds, set it to 0 to be infinite.
     answer: "en un lugar de la mancha", // Mensaje a cifrar, sin tildes
     tip: "Cifrado Cesar, desplazamiento de 3 posiciones", // Pista para el alumno
-    mode: "Transposition", // ["Caesar", "Vigenere", "Transposition"]
+    mode: "Vigenere", // ["Caesar", "Vigenere", "Transposition"]
     extra_mode_info: "hola", // Extra info depending on the cipher. If Caesar, then number of jumps.
     // If Vigenere or columnar transposition, word to use.
     // Para Vigenere hacer un modal que es que puedas hacer
@@ -39,7 +39,6 @@ export let GLOBAL_CONFIG = {
     timeout: 0,
     answer: "En un lugar de la Mancha",
     tip: "Cifrado Csar, desplazamiento de 3 posiciones",
-    CombinationLockImage: "/assets/images/CajaFuerte.png",
     mode: "Caesar",
     extra_mode_info: "4",
     theme: "litera",

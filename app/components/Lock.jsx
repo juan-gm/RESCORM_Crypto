@@ -1,7 +1,7 @@
 import React from 'react';
-
 import Symbol from './Symbol.jsx';
 import Caesar from './Caesar.jsx';
+import Vigenere from './Vigenere.jsx';
 import Transposition from './Transposition.jsx';
 import {GLOBAL_CONFIG} from '../config/config';
 const {answer, mode, extra_mode_info, escapp, puzzleLength, good, bad, tip, PUBLIC_URL} = GLOBAL_CONFIG;
@@ -78,7 +78,7 @@ export default class Lock extends React.Component {
     return result;
   }
 
-  columnarTranspositionCipher(message = answer, word = extra_mode_info){
+  columnarTranspositionCipher(message = answer, word = extra_mode_info.toLowerCase()){
     message = message.toLowerCase();
 
     let messageWithoutSpaces = message.replace(/\s/g, '');
@@ -144,10 +144,10 @@ export default class Lock extends React.Component {
       return <Caesar/>;
       break;
     case 'Vigenere':
-      return 'Vigenere';
+      return <Vigenere/>;
       break;
     case 'Transposition':
-      return <Transposition/>;
+      return <Transposition {...this.state} onConfigChange={(prop,value)=>{this.setState({[prop]:value}, this.preview)}}/>;
     }
   }
 
@@ -160,14 +160,15 @@ export default class Lock extends React.Component {
 
     return (
       <div className="quiz symbols">
-        <h2 className="center">{tip}</h2>
-        <h2 className="center">Mensaje cifrado:</h2>
+        <h2 className="center h2">{tip}</h2>
+        <h2 className="center h2">{I18n.getTrans("i.cipheredMessage")}</h2>
 
-        <div className="center">
+        <div className="center h5 card card-body">
           {this.cipherAlgorithm()}
         </div>
-
-        <div style={{"--number-of-symbols": escapp ? puzzleLength : answer.length}} className={className}>
+        <br />
+        
+       {/* <div style={{"--number-of-symbols": escapp ? puzzleLength : answer.length}} className={className}>
           {respuesta.map((char, i) =>
             <Symbol i={i} key={i}
               current_choice_index = {this.state.current_choice_index}
@@ -175,23 +176,24 @@ export default class Lock extends React.Component {
               onChangeSymbol={this.onChangeSymbol.bind(this)}
             />)
           }
-        </div>
+        </div> */}
 
-        <div className="center">
+
+        <div className="d-flex justify-content-center">
           {this.helpingComponent()}
         </div>
         <br />
 
-        <form className="center" onSubmit={this.handleEnter.bind(this)}>
-          <textarea placeholder = {I18n.getTrans("i.placeholder")} value={this.state.user_answer} onChange={this.handleChangeForm.bind(this)}
-            rows="5" cols="40" style={{borderRadius: "5px", borderColor: "blue"}}
-          /> class=form-control
+        <form className="d-flex justify-content-center form-group" onSubmit={this.handleEnter.bind(this)}>
+          <textarea className="form-control" placeholder = {I18n.getTrans("i.placeholder")} value={this.state.user_answer} onChange={this.handleChangeForm.bind(this)}
+            rows="5" cols="40" 
+          />
         </form>
         <br />
 
-        <div className="center">{this.state.answered ? null :
+        <div className="d-flex justify-content-center">{this.state.answered ? null :
           <button className="button_lock" onClick={this.lockClick}>
-            <img src={`${PUBLIC_URL || "./.."}/assets/images/${this.state.success ? "lock_open" : "lock_closed"}.png`} width="80px" height="100px" />
+            <img src={`./assets/images/${this.state.success ? "lock_open" : "lock_closed"}.png`} width="80px" height="100px" />
           </button>}
         </div>
       </div>
@@ -201,7 +203,7 @@ export default class Lock extends React.Component {
   async lockClick(){
     let currentQuestion = this.state.quiz.questions[0];
     // let userAnswer = this.state.current_choice_index.reduce((accum, el)=>accum + currentQuestion.choices[el].id.toLowerCase(), "");
-    let userAnswer = this.state.user_answer.toLowerCase().trim();
+    let userAnswer = this.state.user_answer.toLowerCase().replace(/\s/g, '');
     let msg = bad;
     let ok = false;
     let extraMessage;
@@ -211,7 +213,7 @@ export default class Lock extends React.Component {
       msg = res.msg;
       ok = res.ok;
       extraMessage = res.extraMessage;
-    } else if (answer && (userAnswer === answer.toLowerCase())){
+    } else if (answer && (userAnswer === answer.toLowerCase().replace(/\s/g, ''))){
       ok = true;
       msg = good;
     }
