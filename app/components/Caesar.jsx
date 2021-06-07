@@ -11,7 +11,7 @@ export default class Caesar extends React.Component {
 
   createAlphabet(){
     const ALPHABET = I18n.getTrans("i.alphabet");
-    return ALPHABET.split('').map(char => <th>{char.toUpperCase() + ' '}</th>);
+    return ALPHABET.split('').map((char, index) => <th key={index}>{char.toUpperCase() + ' '}</th>);
   }
 
   createArrows(){
@@ -35,23 +35,25 @@ export default class Caesar extends React.Component {
       modifiedAlphabet.push(ALPHABET[index]);
     }
     console.log(modifiedAlphabet);
-    return modifiedAlphabet.map(char => <th> {char.toUpperCase() + ' '} </th>);
+    return modifiedAlphabet.map((char, index) => <th key={index}> {char.toUpperCase() + ' '} </th>);
   }
 
   render(){
-    return <div className="d-flex justify-content-center">
-      <table className="table table-sm">
-        <tr>
-          {this.createAlphabet()}
-        </tr>
-        <tr>
-          {this.createArrows()}
-        </tr>
-        <tr>
-          {this.createModifiedAlphabet()}
-        </tr>
-      </table>
-    </div>
+    return (
+      <div className="d-flex justify-content-center">
+        <table className="table table-sm">
+          <tr>
+            {this.createAlphabet()}
+          </tr>
+          <tr>
+            {this.createArrows()}
+          </tr>
+          <tr>
+            {this.createModifiedAlphabet()}
+          </tr>
+        </table>
+      </div>
+    );
     /*
     return <div className="symbol">
       <div className="choice" >

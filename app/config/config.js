@@ -7,9 +7,9 @@ export let GLOBAL_CONFIG = {
     title: "DIGITAL LOCK",
     showUsername: true,
     timeout: 0, // Time available in seconds, set it to 0 to be infinite.
-    answer: "en un lugar de la mancha", // Mensaje a cifrar, sin tildes
+    answer: "enunlugardelamancha", // Mensaje a cifrar, sin tildes
     tip: "Cifrado Cesar, desplazamiento de 3 posiciones", // Pista para el alumno
-    mode: "Vigenere", // ["Caesar", "Vigenere", "Transposition"]
+    mode: "Transposition", // ["Caesar", "Vigenere", "Transposition"]
     extra_mode_info: "hola", // Extra info depending on the cipher. If Caesar, then number of jumps.
     // If Vigenere or columnar transposition, word to use.
     // Para Vigenere hacer un modal que es que puedas hacer
@@ -17,11 +17,25 @@ export let GLOBAL_CONFIG = {
     theme: "litera",
     good: "Enhorabuena, has logrado!!",
     bad: "Lo siento, no has acertado",
-    escapp: false,
+    escapp: true,
+
+    escappConfig: {
+      endpoint:"https://escapp.dit.upm.es/api/escapeRooms/153",
+      localStorageKey:"ESCAPP_Cypher",
+      imagesPath:"assets/images/",
+      I18n:{
+        availableLocales:["es", "en"],
+        locale:"es",
+        defaultLocale:"es",
+      },
+      appPuzzleIds:[1],
+      forceValidation:false,
+    },
+    
     nonMetallic: true,
-    puzzleId: 5,
-    escapeRoomId: 1,
-    puzzleLength: 4,
+    //puzzleId: 1,
+    //escapeRoomId: 153,
+    puzzleLength: 19,
     scorm: {
       completion_threshold: window.config && window.config.threshold ? (window.config.threshold / 100) : 0.5,
       score_threshold: window.config && window.config.threshold ? (window.config.threshold / 100) : 0.6,
@@ -37,18 +51,32 @@ export let GLOBAL_CONFIG = {
     title: "DIGITAL LOCK",
     showUsername: true,
     timeout: 0,
-    answer: "En un lugar de la Mancha",
+    answer: "enunlugardelamancha",
     tip: "Cifrado Csar, desplazamiento de 3 posiciones",
     mode: "Caesar",
     extra_mode_info: "4",
     theme: "litera",
     good: "Enhorabuena, lo has logrado!!",
     bad: "Lo siento, no has acertado",
-    escapp: false,
-    puzzleId: 1,
-    escapeRoomId: 1,
-    puzzleLength: 4,
-    token: "a.delabat@alumnos.upm.es",
+    escapp: true,
+
+    escappConfig: {
+      endpoint:"https://escapp.dit.upm.es/api/escapeRooms/153",
+      localStorageKey:"ESCAPP_Cypher",
+      imagesPath:"assets/images/",
+      I18n:{
+        availableLocales:["es", "en"],
+        locale:"es",
+        defaultLocale:"es",
+      },
+      appPuzzleIds:[1],
+      forceValidation:false,
+    },
+
+    //puzzleId: 1,
+    //escapeRoomId: 1,
+    puzzleLength: 19,
+    //token: "a.delabat@alumnos.upm.es",
     scorm: {
       completion_threshold: window.config && window.config.threshold ? (window.config.threshold / 100) : 0.5,
       score_threshold: window.config && window.config.threshold ? (window.config.threshold / 100) : 0.5,

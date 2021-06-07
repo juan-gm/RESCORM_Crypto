@@ -12,15 +12,15 @@ export default class Caesar extends React.Component {
 
   createAlphabet(){
     const ALPHABET = I18n.getTrans("i.alphabet");
-    return ALPHABET.split('').map(char => <th>{char.toUpperCase() + ' '}</th>);
+    return ALPHABET.split('').map((char, index) => <th key={index}>{char.toUpperCase() + ' '}</th>);
   }
 
   render(){
     return (
-    <div className="d-flex justify-content-center">
-      <img src={`./assets/images/Vigenere.jpg`} />
-    </div>
-    
+      <div className="d-flex justify-content-center">
+        <img src={`./assets/images/Vigenere.jpg`} />
+      </div>
+
     /*
     return <div className="symbol">
       <div className="choice" >

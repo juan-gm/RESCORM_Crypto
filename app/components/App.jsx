@@ -14,6 +14,8 @@ import Header from './Header.jsx';
 import FinishScreen from './FinishScreen.jsx';
 import Lock from './Lock.jsx';
 
+//let escapp;
+
 export class App extends React.Component {
   constructor(props){
     super(props);
@@ -38,6 +40,39 @@ export class App extends React.Component {
       }
     }, 1000);
     this.props.dispatch(addObjectives([new Utils.Objective({id: ("DigitalLock"), progress_measure: 1, score: 1})]));
+    /*
+    // Para hacer lo de escapp
+    escapp = new window.ESCAPP(GLOBAL_CONFIG.escappConfig);
+    // escapp.reset(); //Uncomment for removing local data storage
+    escapp.validate(function(success, er_state){
+      if(success) {
+        this.restoreState(er_state);
+      }
+    }.bind(this));*/
+  }
+
+  restoreState(er_state){
+    /*
+    if(er_state.puzzlesSolved.length > 0){
+      let puzzleId = GLOBAL_CONFIG.escapp.appPuzzleIds[0];
+      if(er_state.puzzlesSolved.indexOf(puzzleId) !== -1){
+        // Puzzle already solved
+        if((typeof er_state.puzzleData === "object") && (typeof er_state.puzzleData[puzzleId] === "object")){
+          let puzzleData = er_state.puzzleData[puzzleId];
+          let message = puzzleData.msg;
+          if((typeof message === "string") && (message.trim() !== "")){
+            GLOBAL_CONFIG.endMessageSuccess = message;
+            // Finish app
+            this.props.dispatch(checkSolution(true));
+            this.setState({"mostrarMsgInicial":false, "mostrarMsgFinal":true});
+            this.mostrarMsgFinal();
+          }
+        }
+      }
+    }
+    this.iniciarPuzzle();
+    // this.props.dispatch(loaded(true)); //'iniciarPuzzle()'' will change loading to false.
+    */
   }
 
   async onSubmit(finished, ok, msg, extraMessage, score = 1){

@@ -29,6 +29,7 @@ export let LOCALES = {
     "i.placeholder": "Answer",
     "i.alphabet": "abcdefghijklmnopqrstuvwxyz",
     "i.cipheredMessage": "Ciphered Message:",
+    "i.noSpaces": "Enter your answer without spaces.",
   },
   es: {
     "i.answer": "Responder",
@@ -59,6 +60,7 @@ export let LOCALES = {
     "AUTHOR": "Eres el autor de esta escape room",
     "i.placeholder": "Respuesta",
     "i.alphabet": "abcdefghijklmnñopqrstuvwxyz",
-    "i.cipheredMessage": "Mensaje cifrado:"
+    "i.cipheredMessage": "Mensaje cifrado:",
+    "i.noSpaces": "Introduce tu respuesta sin espacios.",
   },
 };

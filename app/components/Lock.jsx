@@ -8,6 +8,8 @@ const {answer, mode, extra_mode_info, escapp, puzzleLength, good, bad, tip, PUBL
 import {checkEscapp, timeout} from '../vendors/Utils';
 import * as I18n from '../vendors/I18n.js';
 
+let escappObject;
+
 export default class Lock extends React.Component {
   constructor(props){
     super(props);
@@ -19,6 +21,40 @@ export default class Lock extends React.Component {
     let user_answer = "";
     this.state = {quiz, answered, current_choice_index, user_answer};
     this.lockClick = this.lockClick.bind(this);
+  }
+
+  componentDidMount(){
+    // Para hacer lo de escapp
+    escappObject = new window.ESCAPP(GLOBAL_CONFIG.escappConfig);
+    escappObject.reset(); //Uncomment for removing local data storage
+    escappObject.validate(function(success, er_state){
+      if(success) {
+        this.restoreState(er_state);
+      }
+    }.bind(this));;
+  }
+
+  restoreState(er_state){
+    if(er_state.puzzlesSolved.length > 0){
+      let puzzleId = GLOBAL_CONFIG.escappConfig.appPuzzleIds[0];
+      if(er_state.puzzlesSolved.indexOf(puzzleId) !== -1){
+        // Puzzle already solved
+        if((typeof er_state.puzzleData === "object") && (typeof er_state.puzzleData[puzzleId] === "object")){
+          let puzzleData = er_state.puzzleData[puzzleId];
+          let message = puzzleData.msg;
+          if((typeof message === "string") && (message.trim() !== "")){
+            GLOBAL_CONFIG.good = message;
+            // Finish app
+            console.log('Entered!');
+            this.setState({success: true});
+            this.props.onSubmit(true, true, message, '');
+          }
+        }
+      }
+    }
+
+    //this.iniciarPuzzle();
+    // this.props.dispatch(loaded(true)); //'iniciarPuzzle()'' will change loading to false.
   }
 
   onChangeSymbol(index, content){
@@ -37,15 +73,15 @@ export default class Lock extends React.Component {
     for (let i = 0; i < message.length; i++){
       if (message[i] === " "){
         result = result + " ";
-        continue;
+      } else {
+        let index = ALPHABET.indexOf(message[i]);
+        index = index + number;
+        if (index >= ALPHABET.length){
+          index = index - ALPHABET.length;
+        }
+        // Ya tenemos el index de la letra a añadir, así que añadimos la letra correspondiente a nuestro resultados
+        result = result + ALPHABET[index];
       }
-      let index = ALPHABET.indexOf(message[i]);
-      index = index + number;
-      if (index >= ALPHABET.length){
-        index = index - ALPHABET.length;
-      }
-      // Ya tenemos el index de la letra a añadir, así que añadimos la letra correspondiente a nuestro resultados
-      result = result + ALPHABET[index];
     }
     return result;
   }
@@ -67,12 +103,12 @@ export default class Lock extends React.Component {
     for (let i = 0; i < message.length; i++){
       if (message[i] === " "){
         result = result + " ";
-        continue;
-      }
-      result = result + this.caesarCipher(message[i], word_array[word_array_index]);
-      word_array_index = word_array_index + 1;
-      if (word_array_index >= word_array.length){
-        word_array_index = 0;
+      } else {
+        result = result + this.caesarCipher(message[i], word_array[word_array_index]);
+        word_array_index = word_array_index + 1;
+        if (word_array_index >= word_array.length){
+          word_array_index = 0;
+        }
       }
     }
     return result;
@@ -147,7 +183,8 @@ export default class Lock extends React.Component {
       return <Vigenere/>;
       break;
     case 'Transposition':
-      return <Transposition {...this.state} onConfigChange={(prop,value)=>{this.setState({[prop]:value}, this.preview)}}/>;
+      return (<Transposition {...this.state} onConfigChange={(prop, value)=>{this.setState({[prop]:value}, this.preview)}}/>);
+      break;
     }
   }
 
@@ -167,8 +204,8 @@ export default class Lock extends React.Component {
           {this.cipherAlgorithm()}
         </div>
         <br />
-        
-       {/* <div style={{"--number-of-symbols": escapp ? puzzleLength : answer.length}} className={className}>
+
+      {/* <div style={{"--number-of-symbols": escapp ? puzzleLength : answer.length}} className={className}>
           {respuesta.map((char, i) =>
             <Symbol i={i} key={i}
               current_choice_index = {this.state.current_choice_index}
@@ -186,7 +223,7 @@ export default class Lock extends React.Component {
 
         <form className="d-flex justify-content-center form-group" onSubmit={this.handleEnter.bind(this)}>
           <textarea className="form-control" placeholder = {I18n.getTrans("i.placeholder")} value={this.state.user_answer} onChange={this.handleChangeForm.bind(this)}
-            rows="5" cols="40" 
+            rows="5" cols="40"
           />
         </form>
         <br />
@@ -209,15 +246,45 @@ export default class Lock extends React.Component {
     let extraMessage;
 
     if (escapp){
+      /*
+      La idea es que nosotros en vez de llamar a la función 'chapucera' checkEscapp, llamemos
+      a la función que nos ofrece la librería de escapp_client, que es:
+      escapp.submitPuzzle(número del puzzle, solución del usuario, {}, functionCallback)
+      Para ver un ejemplo de llamar a escapp.submitPuzzle, mirar en el proyecto
+      de PuzzleER en App.jsx la línea 432.
+
+      La función checkEscapp está definida en Utils.js
       const res = await checkEscapp(userAnswer);
       msg = res.msg;
       ok = res.ok;
       extraMessage = res.extraMessage;
+      */
+      console.log(escappObject);
+      escappObject.submitPuzzle(GLOBAL_CONFIG.escappConfig.appPuzzleIds[0], userAnswer, {}, function(success/*'equivalente al ok'*/, res/*'aquí viene el mensaje de si está bien o está mal la solución'*/){
+        console.log("Solution "+ GLOBAL_CONFIG.solution);
+        /*this.props.dispatch(checkSolution(success));
+        if(success){
+          let message = res.msg;
+          if((typeof message === "string") && (message.trim() != "")){
+            GLOBAL_CONFIG.endMessageSuccess = message;
+          }
+        }
+        this.mostrarMsgFinal();*/
+
+        if (success) {
+          this.setState({success: true});
+          msg = res.msg;
+          this.props.onSubmit(true, true, msg, '');
+        }
+      }.bind(this));
+      // El callback devuelve si lo has superado o no superado el reto.
     } else if (answer && (userAnswer === answer.toLowerCase().replace(/\s/g, ''))){
       ok = true;
       msg = good;
     }
 
+    // Esta comprobación del if(ok) solo se hace si NO estamos usando Escapp.
+    // También se puede hacer con una función, que es luego la que le pasaríamos a submitPuzzle.
     if (ok){
       this.setState({success: true});
       this.props.onSubmit(true, true, msg, extraMessage);
