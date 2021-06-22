@@ -4,7 +4,7 @@ import Caesar from './Caesar.jsx';
 import Vigenere from './Vigenere.jsx';
 import Transposition from './Transposition.jsx';
 import {GLOBAL_CONFIG} from '../config/config';
-const {answer, mode, extra_mode_info, escapp, puzzleLength, good, bad, tip, PUBLIC_URL} = GLOBAL_CONFIG;
+const {answer, mode, extra_mode_info, escapp, good, bad, tip, PUBLIC_URL} = GLOBAL_CONFIG;
 import {checkEscapp, timeout} from '../vendors/Utils';
 import * as I18n from '../vendors/I18n.js';
 
@@ -14,7 +14,7 @@ export default class Lock extends React.Component {
   constructor(props){
     super(props);
     let {quiz, answered} = this.props;
-    let current_choice_index = (escapp ? Array(puzzleLength).fill("") : answer.toLowerCase().split("")).map((_, i) => i);
+    let current_choice_index = answer.toLowerCase().split("").map((_, i) => i);
     // current_choice_index is set to an array of incrementing integers starting on zero up until the answer length - 1.
     // For example, if answer = "hola", current_choice_index = [0, 1, 2, 3]
     // Create a new state to hold the contents of the form, which is the user answer:
@@ -25,13 +25,15 @@ export default class Lock extends React.Component {
 
   componentDidMount(){
     // Para hacer lo de escapp
-    escappObject = new window.ESCAPP(GLOBAL_CONFIG.escappConfig);
-    escappObject.reset(); //Uncomment for removing local data storage
-    escappObject.validate(function(success, er_state){
-      if(success) {
-        this.restoreState(er_state);
-      }
-    }.bind(this));;
+    if (escapp && !GLOBAL_CONFIG.preview) {
+      escappObject = new window.ESCAPP(GLOBAL_CONFIG.escappConfig);
+      //escappObject.reset(); //Uncomment for removing local data storage
+      escappObject.validate(function(success, er_state){
+        if(success) {
+          this.restoreState(er_state);
+        }
+      }.bind(this));;
+    }
   }
 
   restoreState(er_state){
@@ -65,14 +67,14 @@ export default class Lock extends React.Component {
 
   caesarCipher(message = answer, number = extra_mode_info){
     const ALPHABET = I18n.getTrans("i.alphabet");
-    number = parseInt(number, 10);
+    number = parseInt(number, 10) || 0;
     message = message.toLowerCase();
 
     let result = "";
 
     for (let i = 0; i < message.length; i++){
-      if (message[i] === " "){
-        result = result + " ";
+      if (message[i].match(/[a-z]/) === null){
+        result = result + message[i];
       } else {
         let index = ALPHABET.indexOf(message[i]);
         index = index + number;
@@ -89,6 +91,10 @@ export default class Lock extends React.Component {
   vigenereCipher(message = answer, word = extra_mode_info){
     const ABECEDARIO = I18n.getTrans("i.alphabet");
     word = word.toLowerCase();
+    if (!Number.isNaN(parseInt(word, 10))) {
+      word = 'a';
+    }
+
     message = message.toLowerCase();
 
     let word_array = [];
@@ -101,7 +107,7 @@ export default class Lock extends React.Component {
     let word_array_index = 0;
 
     for (let i = 0; i < message.length; i++){
-      if (message[i] === " "){
+      if (message[i].match(/[a-z]/) === null){
         result = result + " ";
       } else {
         result = result + this.caesarCipher(message[i], word_array[word_array_index]);
@@ -190,7 +196,7 @@ export default class Lock extends React.Component {
 
   render(){
     const currentQuestion = this.state.quiz.questions[0];
-    const respuesta = (escapp ? Array(puzzleLength).fill("") : answer.toLowerCase().split(""));
+    const respuesta = answer.toLowerCase().split("");
     let className = "flex-symbols-container";
     className += this.state.success ? " success" : "";
     className += this.state.error ? " error" : "";
@@ -205,7 +211,7 @@ export default class Lock extends React.Component {
         </div>
         <br />
 
-      {/* <div style={{"--number-of-symbols": escapp ? puzzleLength : answer.length}} className={className}>
+      {/* <div style={{"--number-of-symbols": answer.length}} className={className}>
           {respuesta.map((char, i) =>
             <Symbol i={i} key={i}
               current_choice_index = {this.state.current_choice_index}

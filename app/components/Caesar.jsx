@@ -1,6 +1,6 @@
 import React from 'react';
 import {GLOBAL_CONFIG} from '../config/config';
-// const {answer, mode, extra_mode_info, escapp, puzzleLength, good, bad, tip, PUBLIC_URL} = GLOBAL_CONFIG;
+// const {answer, mode, extra_mode_info, escapp, good, bad, tip, PUBLIC_URL} = GLOBAL_CONFIG;
 import * as I18n from '../vendors/I18n.js';
 const {extra_mode_info} = GLOBAL_CONFIG;
 

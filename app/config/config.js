@@ -3,21 +3,21 @@ export let GLOBAL_CONFIG = {
     debug: true,
     debug_scorm_api: true,
     debug_scorm_api_window: false,
-    available_locales: ["en", "es"],
+    available_locales: ["es", "en"],
     title: "DIGITAL LOCK",
     showUsername: true,
     timeout: 0, // Time available in seconds, set it to 0 to be infinite.
-    answer: "enunlugardelamancha", // Mensaje a cifrar, sin tildes
+    answer: "ejemplo", // Mensaje a cifrar, sin tildes
     tip: "Cifrado Cesar, desplazamiento de 3 posiciones", // Pista para el alumno
-    mode: "Transposition", // ["Caesar", "Vigenere", "Transposition"]
-    extra_mode_info: "hola", // Extra info depending on the cipher. If Caesar, then number of jumps.
+    mode: "Vigenere", // ["Caesar", "Vigenere", "Transposition"]
+    extra_mode_info: "clave", // Extra info depending on the cipher. If Caesar, then number of jumps.
     // If Vigenere or columnar transposition, word to use.
     // Para Vigenere hacer un modal que es que puedas hacer
     // click y te salga la imagen de la tabla.
     theme: "litera",
     good: "Enhorabuena, has logrado!!",
     bad: "Lo siento, no has acertado",
-    escapp: true,
+    escapp: false,
 
     escappConfig: {
       endpoint:"https://escapp.dit.upm.es/api/escapeRooms/153",
@@ -35,7 +35,7 @@ export let GLOBAL_CONFIG = {
     nonMetallic: true,
     //puzzleId: 1,
     //escapeRoomId: 153,
-    puzzleLength: 19,
+    //puzzleLength: 19,
     scorm: {
       completion_threshold: window.config && window.config.threshold ? (window.config.threshold / 100) : 0.5,
       score_threshold: window.config && window.config.threshold ? (window.config.threshold / 100) : 0.6,
