@@ -9,8 +9,8 @@ export let GLOBAL_CONFIG = {
     timeout: 0, // Time available in seconds, set it to 0 to be infinite.
     answer: "ejemplo", // Mensaje a cifrar, sin tildes
     tip: "Cifrado Cesar, desplazamiento de 3 posiciones", // Pista para el alumno
-    mode: "Vigenere", // ["Caesar", "Vigenere", "Transposition"]
-    extra_mode_info: "clave", // Extra info depending on the cipher. If Caesar, then number of jumps.
+    mode: "Caesar", // ["Caesar", "Vigenere", "Transposition"]
+    extra_mode_info: "1", // Extra info depending on the cipher. If Caesar, then number of jumps.
     // If Vigenere or columnar transposition, word to use.
     // Para Vigenere hacer un modal que es que puedas hacer
     // click y te salga la imagen de la tabla.
